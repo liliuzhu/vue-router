@@ -67,7 +67,7 @@ export class History {
     onComplete?: Function,
     onAbort?: Function
   ) {
-    const route = this.router.match(location, this.current)
+    const route = this.router.match(location, this.current) //找到匹配路由
     this.confirmTransition(
       route,
       () => {

@@ -15,6 +15,7 @@ export function createRouteMap (
   nameMap: Dictionary<RouteRecord>
 } {
   // the path list is used to control path matching priority
+  // 路径列表用于控制路径匹配优先级
   const pathList: Array<string> = oldPathList || []
   // $flow-disable-line
   const pathMap: Dictionary<RouteRecord> = oldPathMap || Object.create(null)
