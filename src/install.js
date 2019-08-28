@@ -11,21 +11,21 @@ export function install (Vue) {
 
   const isDef = v => v !== undefined
 
-  const registerInstance = (vm, callVal) => {
+  const registerInstance = (vm, callVal) => { // 注册实例
     let i = vm.$options._parentVnode
     if (isDef(i) && isDef(i = i.data) && isDef(i = i.registerRouteInstance)) {
-      i(vm, callVal)
+      i(vm, callVal) // 注册路由实例
     }
   }
 
   Vue.mixin({
     beforeCreate () {
-      if (isDef(this.$options.router)) {
+      if (isDef(this.$options.router)) { // 设置根路由-根组件实例
         this._routerRoot = this
         this._router = this.$options.router
         this._router.init(this)
         Vue.util.defineReactive(this, '_route', this._router.history.current)
-      } else {
+      } else { // 非根组件设置
         this._routerRoot = (this.$parent && this.$parent._routerRoot) || this
       }
       registerInstance(this, this)

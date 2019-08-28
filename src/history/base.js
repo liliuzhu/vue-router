@@ -68,7 +68,7 @@ export class History {
     onAbort?: Function
   ) {
     const route = this.router.match(location, this.current) //找到匹配路由
-    this.confirmTransition(
+    this.confirmTransition( //确认是否转化
       route,
       () => {
         this.updateRoute(route)
