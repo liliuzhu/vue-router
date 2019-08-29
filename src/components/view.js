@@ -12,10 +12,12 @@ export default {
   },
   render (_, { props, children, parent, data }) {
     // used by devtools to display a router-view badge
+    // 通过devtools显示路由器视图徽章
     data.routerView = true
 
     // directly use parent context's createElement() function
     // so that components rendered by router-view can resolve named slots
+    //直接使用父上下文的createElement（）函数,以便router-view渲染的组件可以解析具名插槽
     const h = parent.$createElement
     const name = props.name
     const route = parent.$route
@@ -23,6 +25,8 @@ export default {
 
     // determine current view depth, also check to see if the tree
     // has been toggled inactive but kept-alive.
+
+    // 确定当前视图深度，同时检查树是否已被切换为非活动状态但仍保持生命活动状态
     let depth = 0
     let inactive = false
     while (parent && parent._routerRoot !== parent) {
@@ -40,6 +44,7 @@ export default {
     data.routerViewDepth = depth
 
     // render previous view if the tree is inactive and kept-alive
+    // 如果树处于非活动状态并保持活动状态，则渲染上一个视图
     if (inactive) {
       return h(cache[name], data, children)
     }
