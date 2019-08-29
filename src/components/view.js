@@ -51,6 +51,7 @@ export default {
 
     const matched = route.matched[depth]
     // render empty node if no matched route
+    //如果没有匹配的路由，则呈现空节点
     if (!matched) {
       cache[name] = null
       return h()
@@ -60,6 +61,7 @@ export default {
 
     // attach instance registration hook
     // this will be called in the instance's injected lifecycle hooks
+    // 附加实例注册挂钩, 这将在实例的注入生命周期挂钩中调用
     data.registerRouteInstance = (vm, val) => {
       // val could be undefined for unregistration
       const current = matched.instances[name]
@@ -73,12 +75,14 @@ export default {
 
     // also register instance in prepatch hook
     // in case the same component instance is reused across different routes
+    //如果相同的组件实例在不同的路由上重复使用，还应在预检钩子中注册实例
     ;(data.hook || (data.hook = {})).prepatch = (_, vnode) => {
       matched.instances[name] = vnode.componentInstance
     }
 
     // register instance in init hook
     // in case kept-alive component be actived when routes changed
+    // 在init 钩子中注册实例，以防路由更改时激活keep-alive组件
     data.hook.init = (vnode) => {
       if (vnode.data.keepAlive &&
         vnode.componentInstance &&
@@ -89,11 +93,14 @@ export default {
     }
 
     // resolve props
+    // 路由组件传参
     let propsToPass = data.props = resolveProps(route, matched.props && matched.props[name])
     if (propsToPass) {
       // clone to prevent mutation
+      // 克隆以防止突变
       propsToPass = data.props = extend({}, propsToPass)
       // pass non-declared props as attrs
+      // 将未声明的道具作为属性传递
       const attrs = data.attrs = data.attrs || {}
       for (const key in propsToPass) {
         if (!component.props || !(key in component.props)) {

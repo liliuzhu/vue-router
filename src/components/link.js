@@ -6,6 +6,7 @@ import { normalizeLocation } from '../util/location'
 import { warn } from '../util/warn'
 
 // work around weird flow bug
+// 绕过奇怪的flow bug
 const toTypes: Array<Function> = [String, Object]
 const eventTypes: Array<Function> = [String, Array]
 

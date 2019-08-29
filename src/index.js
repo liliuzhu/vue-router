@@ -208,7 +208,7 @@ export default class VueRouter {
     location: Location,
     route: Route,
     href: string,
-    // for backwards compat
+    // for backwards compat 向后兼容
     normalizedTo: Location,
     resolved: Route
   } {

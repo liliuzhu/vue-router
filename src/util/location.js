@@ -6,7 +6,7 @@ import { resolveQuery } from './query'
 import { fillParams } from './params'
 import { warn } from './warn'
 import { extend } from './misc'
-
+// 规范 Location
 export function normalizeLocation (
   raw: RawLocation,
   current: ?Route,
@@ -15,13 +15,13 @@ export function normalizeLocation (
 ): Location {
   let next: Location = typeof raw === 'string' ? { path: raw } : raw
   // named target
-  if (next._normalized) {
+  if (next._normalized) {  // 已规范化
     return next
-  } else if (next.name) {
+  } else if (next.name) { // 有name属性
     return extend({}, raw)
   }
 
-  // relative params
+  // relative params 相关参数
   if (!next.path && next.params && current) {
     next = extend({}, next)
     next._normalized = true
