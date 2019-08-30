@@ -27,6 +27,7 @@ export function createRouteMap (
   })
 
   // ensure wildcard routes are always at the end
+  // 确保"*"通配符路由始终位于末尾
   for (let i = 0, l = pathList.length; i < l; i++) {
     if (pathList[i] === '*') {
       pathList.push(pathList.splice(i, 1)[0])
@@ -41,7 +42,7 @@ export function createRouteMap (
     nameMap
   }
 }
-
+// 添加路由记录
 function addRouteRecord (
   pathList: Array<string>,
   pathMap: Dictionary<RouteRecord>,
@@ -62,10 +63,10 @@ function addRouteRecord (
   }
 
   const pathToRegexpOptions: PathToRegexpOptions =
-    route.pathToRegexpOptions || {}
+    route.pathToRegexpOptions || {} // 编译正则的选项
   const normalizedPath = normalizePath(path, parent, pathToRegexpOptions.strict)
 
-  if (typeof route.caseSensitive === 'boolean') {
+  if (typeof route.caseSensitive === 'boolean') { // 匹配规则是否大小写敏感？(默认值：false)
     pathToRegexpOptions.sensitive = route.caseSensitive
   }
 
@@ -78,7 +79,7 @@ function addRouteRecord (
     parent,
     matchAs,
     redirect: route.redirect,
-    beforeEnter: route.beforeEnter,
+    beforeEnter: route.beforeEnter, // 路由独享的守卫
     meta: route.meta || {},
     props:
       route.props == null
@@ -163,7 +164,7 @@ function addRouteRecord (
     }
   }
 }
-
+// 编译路由正则
 function compileRouteRegex (
   path: string,
   pathToRegexpOptions: PathToRegexpOptions
@@ -181,7 +182,7 @@ function compileRouteRegex (
   }
   return regex
 }
-
+// 规范化路径
 function normalizePath (
   path: string,
   parent?: RouteRecord,

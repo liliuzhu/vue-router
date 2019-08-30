@@ -17,12 +17,12 @@ export function createMatcher (
   routes: Array<RouteConfig>,
   router: VueRouter
 ): Matcher {
-  const { pathList, pathMap, nameMap } = createRouteMap(routes)
+  const { pathList, pathMap, nameMap } = createRouteMap(routes) // 创建路由地图，递归遍历初始化router参数 -> 记录
 
   function addRoutes (routes) {
     createRouteMap(routes, pathList, pathMap, nameMap)
   }
-
+  // 匹配方法
   function match (
     raw: RawLocation,
     currentRoute?: Route,
@@ -169,7 +169,7 @@ export function createMatcher (
     addRoutes
   }
 }
-
+// 匹配路由
 function matchRoute (
   regex: RouteRegExp,
   path: string,

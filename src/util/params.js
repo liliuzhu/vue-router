@@ -20,6 +20,7 @@ export function fillParams (
       (regexpCompileCache[path] = Regexp.compile(path))
 
     // Fix #2505 resolving asterisk routes { name: 'not-found', params: { pathMatch: '/not-found' }}
+    // 修复2505解析星号路由
     if (params.pathMatch) params[0] = params.pathMatch
 
     return filler(params, { pretty: true })

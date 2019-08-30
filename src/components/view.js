@@ -17,7 +17,7 @@ export default {
 
     // directly use parent context's createElement() function
     // so that components rendered by router-view can resolve named slots
-    //直接使用父上下文的createElement（）函数,以便router-view渲染的组件可以解析具名插槽
+    // 直接使用父上下文的createElement（）函数,以便router-view渲染的组件可以解析具名插槽
     const h = parent.$createElement
     const name = props.name
     const route = parent.$route
@@ -51,7 +51,7 @@ export default {
 
     const matched = route.matched[depth]
     // render empty node if no matched route
-    //如果没有匹配的路由，则呈现空节点
+    // 如果没有匹配的路由，则呈现空节点
     if (!matched) {
       cache[name] = null
       return h()
@@ -75,7 +75,7 @@ export default {
 
     // also register instance in prepatch hook
     // in case the same component instance is reused across different routes
-    //如果相同的组件实例在不同的路由上重复使用，还应在预检钩子中注册实例
+    // 如果相同的组件实例在不同的路由上重复使用，还应在预检钩子中注册实例
     ;(data.hook || (data.hook = {})).prepatch = (_, vnode) => {
       matched.instances[name] = vnode.componentInstance
     }

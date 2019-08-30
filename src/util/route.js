@@ -31,7 +31,7 @@ export function createRoute (
   if (redirectedFrom) {
     route.redirectedFrom = getFullPath(redirectedFrom, stringifyQuery)
   }
-  return Object.freeze(route)
+  return Object.freeze(route) // 冻结路由
 }
 
 function clone (value) {
