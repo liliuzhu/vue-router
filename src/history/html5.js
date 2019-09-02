@@ -70,7 +70,7 @@ export class HTML5History extends History {
     return getLocation(this.base)
   }
 }
-
+// 获取Location信息
 export function getLocation (base: string): string {
   let path = decodeURI(window.location.pathname)
   if (base && path.indexOf(base) === 0) {

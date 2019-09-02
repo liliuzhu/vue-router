@@ -49,6 +49,7 @@ function clone (value) {
 }
 
 // the starting route that represents the initial state
+// 表示初始状态的起始路由
 export const START = createRoute(null, {
   path: '/'
 })
@@ -69,7 +70,7 @@ function getFullPath (
   const stringify = _stringifyQuery || stringifyQuery
   return (path || '/') + stringify(query) + hash
 }
-
+// 是否为相同的route
 export function isSameRoute (a: Route, b: ?Route): boolean {
   if (b === START) {
     return a === b
@@ -92,7 +93,7 @@ export function isSameRoute (a: Route, b: ?Route): boolean {
     return false
   }
 }
-
+// 对象是否相等
 function isObjectEqual (a = {}, b = {}): boolean {
   // handle null value #1566
   if (!a || !b) return a === b
@@ -111,7 +112,7 @@ function isObjectEqual (a = {}, b = {}): boolean {
     return String(aVal) === String(bVal)
   })
 }
-
+// 是否包含route
 export function isIncludedRoute (current: Route, target: Route): boolean {
   return (
     current.path.replace(trailingSlashRE, '/').indexOf(
@@ -121,7 +122,7 @@ export function isIncludedRoute (current: Route, target: Route): boolean {
     queryIncludes(current.query, target.query)
   )
 }
-
+// 查询包含
 function queryIncludes (current: Dictionary<string>, target: Dictionary<string>): boolean {
   for (const key in target) {
     if (!(key in current)) {

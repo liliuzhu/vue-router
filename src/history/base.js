@@ -67,8 +67,8 @@ export class History {
     onComplete?: Function,
     onAbort?: Function
   ) {
-    const route = this.router.match(location, this.current) //找到匹配路由
-    this.confirmTransition( //确认是否转化
+    const route = this.router.match(location, this.current) // 找到匹配路由
+    this.confirmTransition(
       route,
       () => {
         this.updateRoute(route)
@@ -96,7 +96,7 @@ export class History {
       }
     )
   }
-
+  // 确认是否转化
   confirmTransition (route: Route, onComplete: Function, onAbort?: Function) {
     const current = this.current
     const abort = err => {
@@ -104,6 +104,7 @@ export class History {
       // When the user navigates through history through back/forward buttons
       // we do not want to throw the error. We only throw it if directly calling
       // push/replace. That's why it's not included in isError
+      // 当用户通过后退/前进按钮浏览历史记录时，我们不希望抛出错误。我们只在直接调用push/replace时抛出它。这就是为什么它不包括在isError中的原因
       if (!isExtendedError(NavigationDuplicated, err) && isError(err)) {
         if (this.errorCbs.length) {
           this.errorCbs.forEach(cb => {
@@ -119,6 +120,7 @@ export class History {
     if (
       isSameRoute(route, current) &&
       // in the case the route map has been dynamically appended to
+      // 在这种情况下，路线图被动态地附加到
       route.matched.length === current.matched.length
     ) {
       this.ensureURL()
@@ -131,15 +133,15 @@ export class History {
     )
 
     const queue: Array<?NavigationGuard> = [].concat(
-      // in-component leave guards
+      // in-component leave guards 组件内离开守卫
       extractLeaveGuards(deactivated),
-      // global before hooks
+      // global before hooks 全局路由进入之前苟泽
       this.router.beforeHooks,
-      // in-component update hooks
+      // in-component update hooks 组件内更新钩子
       extractUpdateHooks(updated),
-      // in-config enter guards
+      // in-config enter guards router配置内beforeEnter守卫
       activated.map(m => m.beforeEnter),
-      // async components
+      // async components 异步组件
       resolveAsyncComponents(activated)
     )
 
@@ -151,7 +153,7 @@ export class History {
       try {
         hook(route, current, (to: any) => {
           if (to === false || isError(to)) {
-            // next(false) -> abort navigation, ensure current URL
+            // next(false) -> abort navigation, ensure current URL 中止导航，确保当前URL
             this.ensureURL(true)
             abort(to)
           } else if (
@@ -175,12 +177,13 @@ export class History {
         abort(e)
       }
     }
-
+    // run 队列
     runQueue(queue, iterator, () => {
       const postEnterCbs = []
       const isValid = () => this.current === route
       // wait until async components are resolved before
       // extracting in-component enter guards
+      // 等待异步组件解析后，再在组件中提取enter guards
       const enterGuards = extractEnterGuards(activated, postEnterCbs, isValid)
       const queue = enterGuards.concat(this.router.resolveHooks)
       runQueue(queue, iterator, () => {

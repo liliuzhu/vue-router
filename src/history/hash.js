@@ -11,6 +11,7 @@ export class HashHistory extends History {
   constructor (router: Router, base: ?string, fallback: boolean) {
     super(router, base)
     // check history fallback deeplinking
+    // 检查历史回退分解
     if (fallback && checkFallback(this.base)) {
       return
     }
@@ -19,6 +20,7 @@ export class HashHistory extends History {
 
   // this is delayed until the app mounts
   // to avoid the hashchange listener being fired too early
+  // 这会延迟到应用程序挂载后，以避免过早触发hashchange侦听器。
   setupListeners () {
     const router = this.router
     const expectScroll = router.options.scrollBehavior
@@ -88,7 +90,7 @@ export class HashHistory extends History {
     return getHash()
   }
 }
-
+// 检查回调
 function checkFallback (base) {
   const location = getLocation(base)
   if (!/^\/#/.test(location)) {
@@ -96,7 +98,7 @@ function checkFallback (base) {
     return true
   }
 }
-
+// 确保/
 function ensureSlash (): boolean {
   const path = getHash()
   if (path.charAt(0) === '/') {
@@ -109,6 +111,7 @@ function ensureSlash (): boolean {
 export function getHash (): string {
   // We can't use window.location.hash here because it's not
   // consistent across browsers - Firefox will pre-decode it!
+  // 我们不能使用window.location。哈希在这里，因为跨浏览器它是不一致- Firefox将预解码它!
   let href = window.location.href
   const index = href.indexOf('#')
   // empty path
@@ -117,6 +120,7 @@ export function getHash (): string {
   href = href.slice(index + 1)
   // decode the hash but not the search or hash
   // as search(query) is already decoded
+  // 解码hash，但search或hash作为搜索(查询)已经解码
   // https://github.com/vuejs/vue-router/issues/2708
   const searchIndex = href.indexOf('?')
   if (searchIndex < 0) {
@@ -147,7 +151,7 @@ function pushHash (path) {
     window.location.hash = path
   }
 }
-
+// 替换hash
 function replaceHash (path) {
   if (supportsPushState) {
     replaceState(getUrl(path))

@@ -39,18 +39,23 @@ export default class VueRouter {
     this.beforeHooks = []
     this.resolveHooks = []
     this.afterHooks = []
+    // 创建 matcher 匹配函数
     this.matcher = createMatcher(options.routes || [], this)
-
+    // 根据 mode 实例化具体的 History，默认为'hash'模式
     let mode = options.mode || 'hash'
+    // 通过 supportsPushState 判断浏览器是否支持'history'模式
+    // 如果设置的是'history'但是如果浏览器不支持的话，'history'模式会退回到'hash'模式
+    // fallback 是当浏览器不支持 history.pushState 控制路由是否应该回退到 hash 模式。默认值为 true。
     this.fallback = mode === 'history' && !supportsPushState && options.fallback !== false
     if (this.fallback) {
       mode = 'hash'
     }
+    // 不在浏览器内部的话，就会变成'abstract'模式
     if (!inBrowser) {
       mode = 'abstract'
     }
     this.mode = mode
-
+    // 根据不同模式选择实例化对应的 History 类
     switch (mode) {
       case 'history':
         this.history = new HTML5History(this, options.base)
@@ -90,24 +95,28 @@ export default class VueRouter {
     this.apps.push(app)
 
     // set up app destroyed handler
+    // 设置应用程序销毁处理程序
     // https://github.com/vuejs/vue-router/issues/2639
     app.$once('hook:destroyed', () => {
       // clean out app from this.apps array once destroyed
+      // 从这个应用程序数组中清除应用程序一旦销毁
       const index = this.apps.indexOf(app)
       if (index > -1) this.apps.splice(index, 1)
       // ensure we still have a main app or null if no apps
       // we do not release the router so it can be reused
+      // 确保我们仍然有一个主应用程序，或者如果没有应用程序，则为空。我们不会释放路由器，以便重新使用。
       if (this.app === app) this.app = this.apps[0] || null
     })
 
     // main app previously initialized
     // return as we don't need to set up new history listener
+    // 主应用以前初始化过返回，因为我们不需要设置新的历史侦听器
     if (this.app) {
       return
     }
 
     this.app = app
-
+    // 根据history的类别执行相应的初始化操作和监听
     const history = this.history
 
     if (history instanceof HTML5History) {
@@ -129,27 +138,27 @@ export default class VueRouter {
       })
     })
   }
-
+  // 路由跳转之前
   beforeEach (fn: Function): Function {
     return registerHook(this.beforeHooks, fn)
   }
-
+  // 路由导航被确认之间前
   beforeResolve (fn: Function): Function {
     return registerHook(this.resolveHooks, fn)
   }
-
+  // 路由跳转之后
   afterEach (fn: Function): Function {
     return registerHook(this.afterHooks, fn)
   }
-
+  // 第一次路由跳转完成时被调用的回调函数
   onReady (cb: Function, errorCb?: Function) {
     this.history.onReady(cb, errorCb)
   }
-
+  // 路由报错
   onError (errorCb: Function) {
     this.history.onError(errorCb)
   }
-
+  // 路由添加，这个方法会向history栈添加一个记录，点击后退会返回到上一个页面。
   push (location: RawLocation, onComplete?: Function, onAbort?: Function) {
     // $flow-disable-line
     if (!onComplete && !onAbort && typeof Promise !== 'undefined') {
@@ -160,7 +169,7 @@ export default class VueRouter {
       this.history.push(location, onComplete, onAbort)
     }
   }
-
+  // 这个方法不会向history里面添加新的记录，点击返回，会跳转到上上一个页面。上一个记录是不存在的。
   replace (location: RawLocation, onComplete?: Function, onAbort?: Function) {
     // $flow-disable-line
     if (!onComplete && !onAbort && typeof Promise !== 'undefined') {
@@ -171,15 +180,15 @@ export default class VueRouter {
       this.history.replace(location, onComplete, onAbort)
     }
   }
-
+  // 相对于当前页面向前或向后跳转多少个页面,类似 window.history.go(n)。n可为正数可为负数。正数返回上一个页面
   go (n: number) {
     this.history.go(n)
   }
-
+  // 后退到上一个页面
   back () {
     this.go(-1)
   }
-
+  // 前进到下一个页面
   forward () {
     this.go(1)
   }
