@@ -24,7 +24,7 @@ export class History {
   readyErrorCbs: Array<Function>
   errorCbs: Array<Function>
 
-  // implemented by sub-classes
+  // implemented by sub-classes 由子类实现
   +go: (n: number) => void
   +push: (loc: RawLocation) => void
   +replace: (loc: RawLocation) => void
@@ -212,7 +212,7 @@ export class History {
     })
   }
 }
-
+// 规范化 base
 function normalizeBase (base: ?string): string {
   if (!base) {
     if (inBrowser) {

@@ -11,7 +11,7 @@ export class HashHistory extends History {
   constructor (router: Router, base: ?string, fallback: boolean) {
     super(router, base)
     // check history fallback deeplinking
-    // 检查历史回退分解
+    // 检查历史回退深度
     if (fallback && checkFallback(this.base)) {
       return
     }
@@ -27,7 +27,7 @@ export class HashHistory extends History {
     const supportsScroll = supportsPushState && expectScroll
 
     if (supportsScroll) {
-      setupScroll()
+      setupScroll() // 设置滚动
     }
 
     window.addEventListener(
@@ -98,7 +98,7 @@ function checkFallback (base) {
     return true
   }
 }
-// 确保/
+// 确保斜线 /
 function ensureSlash (): boolean {
   const path = getHash()
   if (path.charAt(0) === '/') {
@@ -143,7 +143,7 @@ function getUrl (path) {
   const base = i >= 0 ? href.slice(0, i) : href
   return `${base}#${path}`
 }
-
+// push hash 到history
 function pushHash (path) {
   if (supportsPushState) {
     pushState(getUrl(path))
