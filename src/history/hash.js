@@ -78,14 +78,14 @@ export class HashHistory extends History {
   go (n: number) {
     window.history.go(n)
   }
-
+  // 确保 URL
   ensureURL (push?: boolean) {
     const current = this.current.fullPath
     if (getHash() !== current) {
       push ? pushHash(current) : replaceHash(current)
     }
   }
-
+  // 获取元素当前Location
   getCurrentLocation () {
     return getHash()
   }
@@ -107,7 +107,7 @@ function ensureSlash (): boolean {
   replaceHash('/' + path)
   return false
 }
-
+// 获取hash值以及search
 export function getHash (): string {
   // We can't use window.location.hash here because it's not
   // consistent across browsers - Firefox will pre-decode it!

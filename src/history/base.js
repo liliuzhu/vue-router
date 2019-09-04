@@ -61,7 +61,7 @@ export class History {
   onError (errorCb: Function) {
     this.errorCbs.push(errorCb)
   }
-
+  // 过渡至某router
   transitionTo (
     location: RawLocation,
     onComplete?: Function,
@@ -131,21 +131,22 @@ export class History {
       this.current.matched,
       route.matched
     )
-
+    // 钩子队列
     const queue: Array<?NavigationGuard> = [].concat(
       // in-component leave guards 组件内离开守卫
-      extractLeaveGuards(deactivated),
-      // global before hooks 全局路由进入之前苟泽
+      extractLeaveGuards(deactivated), // 返回失活组件beforeRouteLeave内钩子包装后的函数
+      // global before hooks 全局路由进入之前钩子
       this.router.beforeHooks,
       // in-component update hooks 组件内更新钩子
-      extractUpdateHooks(updated),
+      extractUpdateHooks(updated), // 返回重用的组件 beforeRouteUpdate 钩子包装后的函数
       // in-config enter guards router配置内beforeEnter守卫
-      activated.map(m => m.beforeEnter),
+      activated.map(m => m.beforeEnter), // 在路由配置里调用 beforeEnter
       // async components 异步组件
-      resolveAsyncComponents(activated)
+      resolveAsyncComponents(activated) // 解析异步路由组件
     )
 
     this.pending = route
+    // 迭代器
     const iterator = (hook: NavigationGuard, next) => {
       if (this.pending !== route) {
         return abort()
@@ -183,7 +184,7 @@ export class History {
       const isValid = () => this.current === route
       // wait until async components are resolved before
       // extracting in-component enter guards
-      // 等待异步组件解析后，再在组件中提取enter guards
+      // 在提取组件内的enter守卫之前，等待异步组件被解析
       const enterGuards = extractEnterGuards(activated, postEnterCbs, isValid)
       const queue = enterGuards.concat(this.router.resolveHooks)
       runQueue(queue, iterator, () => {
@@ -202,7 +203,7 @@ export class History {
       })
     })
   }
-
+  // 更新 router
   updateRoute (route: Route) {
     const prev = this.current
     this.current = route
@@ -232,7 +233,7 @@ function normalizeBase (base: ?string): string {
   // remove trailing slash
   return base.replace(/\/$/, '')
 }
-
+// 解析队列
 function resolveQueue (
   current: Array<RouteRecord>,
   next: Array<RouteRecord>
@@ -254,7 +255,7 @@ function resolveQueue (
     deactivated: current.slice(i)
   }
 }
-
+// 提取警卫s
 function extractGuards (
   records: Array<RouteRecord>,
   name: string,
@@ -271,7 +272,7 @@ function extractGuards (
   })
   return flatten(reverse ? guards.reverse() : guards)
 }
-
+// 提取警卫
 function extractGuard (
   def: Object | Function,
   key: string
@@ -290,15 +291,15 @@ function extractLeaveGuards (deactivated: Array<RouteRecord>): Array<?Function> 
 function extractUpdateHooks (updated: Array<RouteRecord>): Array<?Function> {
   return extractGuards(updated, 'beforeRouteUpdate', bindGuard)
 }
-
+// 绑定守卫
 function bindGuard (guard: NavigationGuard, instance: ?_Vue): ?NavigationGuard {
   if (instance) {
-    return function boundRouteGuard () {
+    return function boundRouteGuard () { // 绑定路由守卫
       return guard.apply(instance, arguments)
     }
   }
 }
-
+// 提取beforeRouteEnter守卫
 function extractEnterGuards (
   activated: Array<RouteRecord>,
   cbs: Array<Function>,
@@ -312,7 +313,7 @@ function extractEnterGuards (
     }
   )
 }
-
+// 绑定Enter守卫
 function bindEnterGuard (
   guard: NavigationGuard,
   match: RouteRecord,

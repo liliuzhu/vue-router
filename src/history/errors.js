@@ -7,6 +7,7 @@ export class NavigationDuplicated extends Error {
       normalizedLocation.fullPath
     }") is not allowed`
     // add a stack property so services like Sentry can correctly display it
+    // 添加堆栈属性，以便像哨兵这样的服务可以正确地显示它
     Object.defineProperty(this, 'stack', {
       value: new Error().stack,
       writable: true,

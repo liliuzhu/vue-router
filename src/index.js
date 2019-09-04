@@ -249,7 +249,7 @@ export default class VueRouter {
     }
   }
 }
-
+// 注册钩子
 function registerHook (list: Array<any>, fn: Function): Function {
   list.push(fn)
   return () => {
@@ -257,7 +257,7 @@ function registerHook (list: Array<any>, fn: Function): Function {
     if (i > -1) list.splice(i, 1)
   }
 }
-
+// 创建href
 function createHref (base: string, fullPath: string, mode) {
   var path = mode === 'hash' ? '#' + fullPath : fullPath
   return base ? cleanPath(base + '/' + path) : path
