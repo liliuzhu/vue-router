@@ -96,7 +96,7 @@ export class History {
       }
     )
   }
-  // 确认是否转化
+  // 确认是否跳转
   confirmTransition (route: Route, onComplete: Function, onAbort?: Function) {
     const current = this.current
     const abort = err => {
@@ -132,7 +132,7 @@ export class History {
       route.matched
     )
     // 钩子队列
-    const queue: Array<?NavigationGuard> = [].concat(
+    const queue: Array<?NavigationGuard> = [].concat( // 此处高阶函数过多，难以理解
       // in-component leave guards 组件内离开守卫
       extractLeaveGuards(deactivated), // 返回失活组件beforeRouteLeave内钩子包装后的函数
       // global before hooks 全局路由进入之前钩子
@@ -208,7 +208,7 @@ export class History {
     const prev = this.current
     this.current = route
     this.cb && this.cb(route)
-    this.router.afterHooks.forEach(hook => {
+    this.router.afterHooks.forEach(hook => { // 触发全局afterEach守卫
       hook && hook(route, prev)
     })
   }
@@ -326,9 +326,9 @@ function bindEnterGuard (
       if (typeof cb === 'function') {
         cbs.push(() => {
           // #750
-          // if a router-view is wrapped with an out-in transition,
-          // the instance may not have been registered at this time.
-          // we will need to poll for registration until current route
+          // if a router-view is wrapped with an out-in transition, 如果一个router-view被out-in转换封装了
+          // the instance may not have been registered at this time. 此时该实例可能没有被注册
+          // we will need to poll for registration until current route 我们需要轮询注册，直到当前路由不再有效
           // is no longer valid.
           poll(cb, match.instances, key, isValid)
         })
@@ -339,14 +339,14 @@ function bindEnterGuard (
 }
 
 function poll (
-  cb: any, // somehow flow cannot infer this is a function
+  cb: any, // somehow flow cannot infer this is a function 不知怎的，flow不能推断这是一个函数
   instances: Object,
   key: string,
   isValid: () => boolean
 ) {
   if (
     instances[key] &&
-    !instances[key]._isBeingDestroyed // do not reuse being destroyed instance
+    !instances[key]._isBeingDestroyed // do not reuse being destroyed instance 不重用被销毁的实例
   ) {
     cb(instances[key])
   } else if (isValid()) {

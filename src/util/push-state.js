@@ -41,6 +41,7 @@ export function pushState (url?: string, replace?: boolean) {
   saveScrollPosition()
   // try...catch the pushState call to get around Safari
   // DOM Exception 18 where it limits to 100 pushState calls
+  // try...catch 绕过safari dom异常18的pushstate调用，其中它限制为100个pushstate调用
   const history = window.history
   try {
     if (replace) {

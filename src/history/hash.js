@@ -104,7 +104,7 @@ function ensureSlash (): boolean {
   if (path.charAt(0) === '/') {
     return true
   }
-  replaceHash('/' + path)
+  replaceHash('/' + path)  // 这里有个bug，也许是策略的不同，(删掉/并改变hash，仅改变hash 并不会触发组件改变即 transitionTo)
   return false
 }
 // 获取hash值以及search

@@ -63,7 +63,7 @@ export default {
     // this will be called in the instance's injected lifecycle hooks
     // 附加实例注册挂钩, 这将在实例的注入生命周期挂钩中调用
     data.registerRouteInstance = (vm, val) => {
-      // val could be undefined for unregistration
+      // val could be undefined for unregistration  // 注销时 val 可以为 undefined
       const current = matched.instances[name]
       if (
         (val && current !== vm) ||

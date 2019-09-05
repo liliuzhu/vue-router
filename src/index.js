@@ -132,7 +132,7 @@ export default class VueRouter {
       )
     }
 
-    history.listen(route => {
+    history.listen(route => { // 更新route时的一个回调，为_routerRoot更新_route的值
       this.apps.forEach((app) => {
         app._route = route
       })
@@ -209,7 +209,7 @@ export default class VueRouter {
     }))
   }
 
-  resolve (
+  resolve ( // 解析
     to: RawLocation,
     current?: Route,
     append?: boolean
