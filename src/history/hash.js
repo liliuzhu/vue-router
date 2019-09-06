@@ -90,7 +90,7 @@ export class HashHistory extends History {
     return getHash()
   }
 }
-// 检查回调
+// 检查模式兼容降级
 function checkFallback (base) {
   const location = getLocation(base)
   if (!/^\/#/.test(location)) {
