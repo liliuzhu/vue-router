@@ -163,7 +163,7 @@ export default {
 function guardEvent (e) {
   // don't redirect with control keys 不要用控制键重定向
   if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) return
-  // don't redirect when preventDefault called 调用PreventDefault时不重定向
+  // don't redirect when preventDefault called 当PreventDefault已调用，不重定向
   if (e.defaultPrevented) return
   // don't redirect on right click 右键单击时不重定向
   if (e.button !== undefined && e.button !== 0) return
@@ -172,13 +172,13 @@ function guardEvent (e) {
     const target = e.currentTarget.getAttribute('target')
     if (/\b_blank\b/i.test(target)) return
   }
-  // this may be a Weex event which doesn't have this method 这可能是一个没有此方法的weex事件
+  // this may be a Weex event which doesn't have this method 这可能是一个没有此方法的weex事件 // 阻止默认行为 防止跳转
   if (e.preventDefault) {
     e.preventDefault()
   }
   return true
 }
-
+// 找到第一个A标签
 function findAnchor (children) {
   if (children) {
     let child
