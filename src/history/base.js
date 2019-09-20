@@ -233,7 +233,7 @@ function normalizeBase (base: ?string): string {
   // remove trailing slash
   return base.replace(/\/$/, '')
 }
-// 解析队列
+// 解析队列，分析出当前路由和下一个路由的区别，那些路由要变化，那些路由要执行路由守卫
 function resolveQueue (
   current: Array<RouteRecord>,
   next: Array<RouteRecord>

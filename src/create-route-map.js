@@ -42,7 +42,7 @@ export function createRouteMap (
     nameMap
   }
 }
-// 添加路由记录
+// 添加 路由记录 函数
 function addRouteRecord (
   pathList: Array<string>,
   pathMap: Dictionary<RouteRecord>,
@@ -89,10 +89,13 @@ function addRouteRecord (
           : { default: route.props }
   }
 
+  // 嵌套子路由， 递归增加记录
   if (route.children) {
     // Warn if route is named, does not redirect and has a default child route.
     // If users navigate to this route by name, the default child will
     // not be rendered (GH Issue #629)
+    // 如果路由已命名、不重定向且具有默认子路由，则发出警告。
+    // 如果用户按名称导航到此路由，则不会呈现默认子路由
     if (process.env.NODE_ENV !== 'production') {
       if (
         route.name &&
@@ -119,11 +122,12 @@ function addRouteRecord (
     })
   }
 
+  // pathMap 去重 更新
   if (!pathMap[record.path]) {
     pathList.push(record.path)
     pathMap[record.path] = record
   }
-
+  // 处理别名 alias 逻辑，增加对应的记录
   if (route.alias !== undefined) {
     const aliases = Array.isArray(route.alias) ? route.alias : [route.alias]
     for (let i = 0; i < aliases.length; ++i) {

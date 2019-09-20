@@ -21,9 +21,10 @@ export function install (Vue) {
   Vue.mixin({
     beforeCreate () {
       if (isDef(this.$options.router)) { // 设置根路由-根组件实例
-        this._routerRoot = this
-        this._router = this.$options.router
+        this._routerRoot = this // 将_routerRoot指向根组件
+        this._router = this.$options.router // 将router对象挂载到根组件元素_router上
         this._router.init(this)
+        // 劫持数据_route，一旦_route数据发生变化后，通知router-view执行render方法
         Vue.util.defineReactive(this, '_route', this._router.history.current)
       } else { // 非根组件设置
         this._routerRoot = (this.$parent && this.$parent._routerRoot) || this
@@ -34,7 +35,7 @@ export function install (Vue) {
       registerInstance(this)
     }
   })
-
+  // 通过Vue.prototype定义$router、$route 属性（方便所有组件可以获取这两个属性）
   Object.defineProperty(Vue.prototype, '$router', {
     get () { return this._routerRoot._router }
   })
@@ -43,6 +44,7 @@ export function install (Vue) {
     get () { return this._routerRoot._route }
   })
 
+  // Vue上注册router-link和router-view两个组件
   Vue.component('RouterView', View)
   Vue.component('RouterLink', Link)
 
