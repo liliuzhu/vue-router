@@ -18,6 +18,7 @@ export function install (Vue) {
     }
   }
 
+  /* 混淆进Vue实例，在boforeCreate与destroyed钩子上混淆 */
   Vue.mixin({
     beforeCreate () {
       if (isDef(this.$options.router)) { // 设置根路由-根组件实例
